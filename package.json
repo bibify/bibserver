@@ -1,0 +1,52 @@
+{
+  "name": "bibserver",
+  "version": "1.0.0",
+  "description": "Robust API server for fetching bibliography/citation information",
+  "main": "dist",
+  "scripts": {
+    "dev": "nodemon -w src --exec \"babel-node src --presets es2015,stage-0\"",
+    "build": "babel src -s -D -d dist --presets es2015,stage-0",
+    "start": "node dist",
+    "prestart": "npm run -s build",
+    "test": "eslint src"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 7,
+      "sourceType": "module"
+    },
+    "env": {
+      "node": true
+    },
+    "rules": {
+      "no-console": 0,
+      "no-unused-vars": 1
+    }
+  },
+  "repository": "https://gitlab.com/bbworld1/bibserver",
+  "author": "Vincent Wang <vwangsf@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "body-parser": "^1.13.3",
+    "bookify": "^0.1.2",
+    "citeproc": "^2.2.30",
+    "compression": "^1.5.2",
+    "cors": "^2.7.1",
+    "express": "^4.13.3",
+    "got": "^10.1.0",
+    "metascraper": "^5.8.13",
+    "morgan": "^1.8.0",
+    "resource-router-middleware": "^0.6.0",
+    "superagent-cache": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-core": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "eslint": "^3.1.1",
+    "nodemon": "^1.9.2"
+  }
+}
