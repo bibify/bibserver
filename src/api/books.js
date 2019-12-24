@@ -1,5 +1,4 @@
 import bookify from 'bookify';
-import * from './getPublisherInfo' as getPublisherInfo;
 
 const bookifyCache = new bookify();
 
