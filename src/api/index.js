@@ -15,6 +15,18 @@ export default ({ config, db }) => {
 	});
 
   api.get('/books', (req, res) => {
+    /* Return a list of query results for a Book:
+     * {
+     *   type: "BOOK",
+     *   title: string,
+     *   author: [string, string, etc],
+     *   publisher: string,
+     *   date: string (ISO date),
+     *   thumbnail: url,
+     *   pages: int (pages),
+     *   categories: [string, string, etc]
+     * }
+     */
     let query = req.query.q;
 
     books.search(query)
