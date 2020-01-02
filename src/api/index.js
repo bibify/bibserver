@@ -2,6 +2,7 @@ import { version } from '../../package.json';
 import { Router } from 'express';
 import facets from './facets';
 import books from './books';
+import makebib from './makebib';
 
 export default ({ config, db }) => {
 	let api = Router();
@@ -36,5 +37,6 @@ export default ({ config, db }) => {
       });
 	});
 
+  makebib.makeBib();
 	return api;
 }

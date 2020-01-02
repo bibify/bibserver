@@ -1,6 +1,8 @@
 import bookify from 'bookify';
+import superagent from 'superagent';
+import superagentCache from 'superagent-cache';
 
-const bookifyCache = new bookify();
+const bookifyCache = new bookify({ superagent: superagentCache(superagent) });
 
 function search(query) {
   /* Return a list of query results for a Book:
@@ -39,6 +41,5 @@ function search(query) {
       });
   });
 }
-
 
 module.exports.search = search;
