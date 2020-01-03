@@ -27,6 +27,8 @@ app.use(bodyParser.json({
 }));
 
 // connect to db
+// NOTE: There is no actual db right now, but keeping this part
+// in case we want to use a db
 initializeDb( db => {
 
 	// internal middleware
