@@ -50,6 +50,10 @@ export default ({ config, db }) => {
     res.json(fuse.search(search));
   });
 
+  api.get('/cite', (req, res) => {
+    res.json(makebib(req));
+  });
+
   api.get('/books', (req, res) => {
     /* Return a list of query results for a Book:
      * {
