@@ -25,12 +25,12 @@ function search(query) {
         for (let result of results) {
           books.push({
             title: result.title,
-            authors: result.authors == undefined ? "Unknown Author": result.authors,
-            publisher: result.publisher == undefined ? "Unknown Publisher" : result.publisher,
-            date: result.publishedDate == undefined ? "Published Date Unknown": result.publishedDate,
+            authors: result.authors,
+            publisher: result.publisher,
+            date: result.publishedDate,
             categories: result.categories,
             thumbnail: result.thumbnail,
-            pages: result.pageCount == undefined ? "Unknown page count" : result.pageCount
+            pages: result.pageCount
           });
         }
         done(books);

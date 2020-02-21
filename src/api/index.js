@@ -2,6 +2,9 @@ import { version } from '../../package.json';
 import { Router } from 'express';
 import shell from 'shelljs';
 import Fuse from 'fuse.js';
+import fs from 'fs';
+import { DOMParser } from 'xmldom';
+import xpath from 'xpath';
 import facets from './facets';
 import books from './books';
 import makebib from './makebib';
@@ -10,6 +13,7 @@ export default ({ config, db }) => {
 	let api = Router();
 
   let citationStyles = getCitationStyleList();
+  let typeMap = getTypeMap();
 
 	// mount the facets resource
 	api.use('/facets', facets({ config, db }));
@@ -50,8 +54,26 @@ export default ({ config, db }) => {
     res.json(fuse.search(search));
   });
 
+  api.get('/fields/:type', (req, res) => {
+    /* Fetch a list of citation fields
+     * for the specified type.
+     */
+
+    let type = req.params.type.toLowerCase();
+    let labels = xpath.select(`//typeMap[@zType='${type}']/*/@label`, typeMap);
+    let values = xpath.select(`//typeMap[@zType='${type}']/*/@value`, typeMap);
+
+    console.log(labels);
+    let fields = Object.assign({}, ...labels.map((n, index) => ({[n.value]: values[index].value})))
+    console.log(fields);
+
+    res.send(fields);
+  });
+
   api.get('/cite', (req, res) => {
-    res.json(makebib(req));
+    let style = req.query.style;
+    console.log(style, req.query);
+    res.json(makebib.makeBib(style, req.query));
   });
 
   api.get('/books', (req, res) => {
@@ -71,7 +93,6 @@ export default ({ config, db }) => {
 
     books.search(query)
       .then((results) => {
-        console.log(results);
         res.json(results);
       });
 	});
@@ -130,4 +151,20 @@ function getCitationStyleList() {
   shell.cd("..");
 
   return citationStyles;
+}
+
+function getTypeMap() {
+  /* Get TypeMap and parse it into an XMLDOM.
+   * Note: It's OK to use readFileSync here because
+   * this function is only run on server startup.
+   *
+   * In fact, we want this to block as the /<type>/fields
+   * endpoint requires it.
+   */
+
+  let parser = new DOMParser();
+  let typeMapText = fs.readFileSync("data/typeMap.xml").toString();
+  let typeMap = parser.parseFromString(typeMapText, "text/xml");
+
+  return typeMap;
 }
