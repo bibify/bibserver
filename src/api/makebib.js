@@ -12,13 +12,14 @@ function makeBib(style, item) {
    * @param item: an item in CSL-JSON format
    * (see https://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#introduction)
    */
-  let styleString = fs.readFileSync("./csl/apa.csl");
+  console.log("./csl/"+style);
+  let styleString = fs.readFileSync("./csl/" + style);
   let engine = sys.newEngine(styleString, 'en-US', null);
   let items = {
     "0": formatItem(item)
   };
   sys.items = items;
-  console.log(items.author);
+  console.log(items);
 
   engine.updateItems(Object.keys(items));
   let bib = engine.makeBibliography();
@@ -37,10 +38,11 @@ function formatItem(item) {
   item.id = "0";
   item.type = "book";
   item.accessed = {
-    "month": 9,
-    "year": 2019,
-    "day": 10
+    raw: new Date().toISOString().slice(0,10)
   };
+  item.issued = {
+    raw: item.date
+  }
 
   let authors = item.authors;
   console.log("authors", item.authors);

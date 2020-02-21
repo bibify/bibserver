@@ -114,7 +114,6 @@ function getCitationStyleList() {
     "Chicago Manual of Style 17th edition (author-date)",
     "American Psychological Association 7th edition",
     "American Psychological Association 6th edition",
-    "Harvard Educational Review",
     "Modern Language Association 7th edition",
     "Modern Language Association 8th edition"
   ];
