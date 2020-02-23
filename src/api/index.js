@@ -38,6 +38,7 @@ export default ({ config, db }) => {
   api.get('/styles/search', (req, res) => {
     /* Search for a specific style.
      * Search should have a q=<search-query> parameter.
+     * Can also have a limit=<number_of_items> parameter to limit returned results.
      */
     let search = req.query.q;
     let options = {
@@ -51,7 +52,11 @@ export default ({ config, db }) => {
 
     console.log("Query:", search);
     let fuse = new Fuse(citationStyles, options);
-    res.json(fuse.search(search));
+    if (req.query.limit == undefined) {
+      res.json(fuse.search(search));
+    } else {
+      res.json(fuse.search(search).slice(0, req.query.limit));
+    }
   });
 
   api.get('/fields/:type', (req, res) => {
@@ -63,8 +68,13 @@ export default ({ config, db }) => {
     let labels = xpath.select(`//typeMap[@zType='${type}']/*/@label`, typeMap);
     let values = xpath.select(`//typeMap[@zType='${type}']/*/@value`, typeMap);
 
+    console.log(typeMap);
     console.log(labels);
-    let fields = Object.assign({}, ...labels.map((n, index) => ({[n.value]: values[index].value})))
+    console.log(values);
+    let fields = [];
+    for (let i = 0; i < labels.length; i++) {
+      fields.push({"label": labels[i].value, "field": values[i].value});
+    }
     console.log(fields);
 
     res.send(fields);
@@ -162,7 +172,7 @@ function getTypeMap() {
    */
 
   let parser = new DOMParser();
-  let typeMapText = fs.readFileSync("data/typeMap.xml").toString();
+  let typeMapText = fs.readFileSync("./data/typeMap.xml").toString();
   let typeMap = parser.parseFromString(typeMapText, "text/xml");
 
   return typeMap;
