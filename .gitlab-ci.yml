@@ -6,7 +6,8 @@ linting:
   stage: linting
   image: node:latest
   script:
-    - npm install --global jslint
+    - npm i --global jslint
+    - npm i
     - jslint '**/*.js'
 
 build-docker-image:
