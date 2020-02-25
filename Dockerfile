@@ -1,10 +1,7 @@
-FROM alpine:3.4
+FROM node:latest
 
 # File Author / Maintainer
 LABEL authors="Vincent Wang"
-
-# Update & install required packages
-RUN apk add --update nodejs bash git
 
 # Install app dependencies
 COPY package.json /www/package.json
