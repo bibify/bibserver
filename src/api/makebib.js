@@ -38,7 +38,7 @@ function formatItem(item) {
   item.id = "0";
   item.type = "book";
   item.accessed = {
-    raw: new Date().toISOString().slice(0,10)
+    raw: item.accessDate || new Date().toISOString().slice(0,10)
   };
   item.issued = {
     raw: item.date
