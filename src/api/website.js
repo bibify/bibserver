@@ -48,8 +48,14 @@ function getInfo(url) {
               delete metadata.author;
               metadata.authors = [];
               for (let author of authors) {
-                if (author.trim() == metadata.publisher.trim()) continue;
-                metadata.authors.push(author.trim());
+                // If there's XML tags left in authors that metascraper missed,
+                // remove them
+                // Also do some other cleaning up
+                author = author.trim().replace(/(<.[^(><.)]+>)/g, "");
+
+                // If the author is a valid author, add it to the list
+                if (author == metadata.publisher.trim()) continue;
+                metadata.authors.push(author);
               }
             }
 
