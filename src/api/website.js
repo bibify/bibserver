@@ -42,6 +42,12 @@ function getInfo(url) {
             metadata.thumbnail = metadata.logo;
             delete metadata.logo;
 
+            // Alias publisher so CSL is happy
+            metadata["container-title"] = metadata.publisher;
+
+            // url needs to uppercase for CSL to be happy
+            metadata.URL = metadata.url;
+
             // Parse authors a bit
             if (metadata.author != null) {
               let authors = metadata.author.split(/,|and/g);

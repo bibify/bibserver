@@ -36,7 +36,6 @@ function formatItem(item) {
    * the lazy route and tack on the necessary attributes.
    */
   item.id = "0";
-  item.type = "book";
   item.accessed = {
     raw: item.accessDate || new Date().toISOString().slice(0,10)
   };

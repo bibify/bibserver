@@ -291,7 +291,7 @@
         <creatorType label="Contributor" value="contributor" />
       </field>
     </typeMap>
-    <typeMap zType="website" cslType="website">
+    <typeMap zType="webpage" cslType="webpage">
       <field label="Title" value="title" />
       <field label="Abstract" value="abstractNote" />
       <field label="Website Title" value="websiteTitle" baseField="publicationTitle" />
@@ -299,6 +299,7 @@
       <field label="Date" value="date" />
       <field label="Short Title" value="shortTitle" />
       <field label="URL" value="url" />
+      <field label="Publisher" value="publisher" />
       <field label="Accessed" value="accessDate" />
       <field label="Language" value="language" />
       <field label="Rights" value="rights" />

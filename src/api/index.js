@@ -67,14 +67,22 @@ export default ({ config, db }) => {
 
     let type = req.params.type.toLowerCase();
     let labels = xpath.select(`//typeMap[@zType='${type}']/*/@label`, typeMap);
-    let values = xpath.select(`//typeMap[@zType='${type}']/*/@value`, typeMap);
+    let zvalues = xpath.select(`//typeMap[@zType='${type}']/*`, typeMap);
 
-    console.log(typeMap);
-    console.log(labels);
-    console.log(values);
     let fields = [];
     for (let i = 0; i < labels.length; i++) {
-      fields.push({"label": labels[i].value, "field": values[i].value});
+      let zvalue = zvalues[i].getAttribute("baseField") || zvalues[i].getAttribute("value");
+      let value = xpath.select(`//map[@zField='${zvalue}']/@cslField`, typeMap);
+      if (value.length == 0) {
+        value = zvalue;
+      } else {
+        value = value[0].value;
+      }
+
+      fields.push({
+        "label": labels[i].value,
+        "field": value
+      });
     }
     console.log(fields);
 
