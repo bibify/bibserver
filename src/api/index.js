@@ -7,6 +7,7 @@ import { DOMParser } from 'xmldom';
 import xpath from 'xpath';
 import facets from './facets';
 import books from './books';
+import website from './website';
 import makebib from './makebib';
 
 export default ({ config, db }) => {
@@ -106,6 +107,26 @@ export default ({ config, db }) => {
         res.json(results);
       });
 	});
+
+  api.get('/website', (req, res) => {
+    /* Return a list of query results for a Website:
+     * {
+     *   type: "website",
+     *   url: string,
+     *   title: string,
+     *   author: [string, string, etc],
+     *   publisher: string,
+     *   date: string (ISO date),
+     *   <anything else metascraper picks up>
+     * }
+     */
+    let url = req.query.url;
+
+    website.getInfo(url)
+      .then((info) => {
+        res.json(info);
+      });
+  });
 
 	return api;
 }
