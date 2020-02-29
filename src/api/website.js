@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { DOMParser } from 'xmldom';
+import xpath from 'xpath';
 
 const metascraper = require('metascraper')([
   require('metascraper-author')(),
@@ -11,6 +13,8 @@ const metascraper = require('metascraper')([
   require('metascraper-title')(),
   require('metascraper-url')()
 ]);
+
+const parser = new DOMParser();
 
 function getInfo(url) {
   /* Return a list of query results for a Website:
@@ -29,12 +33,24 @@ function getInfo(url) {
       .then((res) => {
         metascraper({html: res.data, url: url})
           .then((metadata) => {
-            let authors = metadata.author.split(/,|and/g);
-            delete metadata.author;
-            metadata.authors = [];
-            for (let author of authors) {
-              if (author.trim() == metadata.publisher.trim()) continue;
-              metadata.authors.push(author.trim());
+            // Format date
+            if (metadata.date != null) {
+              metadata.date = metadata.date.slice(0, 10);
+            }
+
+            // Get logo
+            metadata.thumbnail = metadata.logo;
+            delete metadata.logo;
+
+            // Parse authors a bit
+            if (metadata.author != null) {
+              let authors = metadata.author.split(/,|and/g);
+              delete metadata.author;
+              metadata.authors = [];
+              for (let author of authors) {
+                if (author.trim() == metadata.publisher.trim()) continue;
+                metadata.authors.push(author.trim());
+              }
             }
 
             done(metadata);
