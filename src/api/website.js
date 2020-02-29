@@ -29,6 +29,14 @@ function getInfo(url) {
       .then((res) => {
         metascraper({html: res.data, url: url})
           .then((metadata) => {
+            let authors = metadata.author.split(/,|and/g);
+            delete metadata.author;
+            metadata.authors = [];
+            for (let author of authors) {
+              if (author.trim() == metadata.publisher.trim()) continue;
+              metadata.authors.push(author.trim());
+            }
+
             done(metadata);
           })
           .catch((err) => {
