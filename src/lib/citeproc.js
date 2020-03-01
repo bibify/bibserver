@@ -59,7 +59,7 @@ Copyright (c) 2009-2019 Frank Bennett
 
 var CSL = {
 
-    PROCESSOR_VERSION: "1.2.30",
+    PROCESSOR_VERSION: "1.2.31",
 
     error: function(str) { // default error function
         if ("undefined" === typeof Error) {
@@ -647,6 +647,7 @@ var CSL = {
         "number",
         "number-of-pages",
         "number-of-volumes",
+        "version",
         "volume",
         // "section", ??? add this?
         "supplement",
@@ -15075,7 +15076,10 @@ CSL.Node.text = {
 
                     // Deal with multi-fields and ordinary fields separately.
                     if (CSL.MULTI_FIELDS.indexOf(this.variables_real[0]) > -1
-                        || ["language-name", "language-name-original"].indexOf(this.variables_real[0]) > -1) {
+                        || this.variables_real[0].indexOf("-main") > -1
+                        || this.variables_real[0].indexOf("-sub") > -1
+                        || ["language-name", "language-name-original"].indexOf(this.variables_real[0]) > -1
+                       ) {
 
                         // multi-fields
                         // Initialize transform factory according to whether
@@ -15348,7 +15352,7 @@ CSL.Attributes["@is-numeric"] = function (state, arg) {
                 if (state.tmp.shadow_numbers[variable].numeric) {
                     return true;
                 }
-            } else if (["title", "locator-extra","version"].indexOf(variable) > -1) {
+            } else if (["title","version"].indexOf(variable) > -1) {
                 if (myitem[variable].slice(-1) === "" + parseInt(myitem[variable].slice(-1), 10)) {
                     return true;
                 }

@@ -1,10 +1,14 @@
 import fs from 'fs';
 import citeprocnode from '../lib/citeprocnode';
+import { DOMParser } from 'xmldom';
+import xpath from 'xpath';
 
 // One time setup
 let sys = new citeprocnode.simpleSys();
 let enUS = fs.readFileSync('./csl-locales/locales-en-US.xml', 'utf-8');
 sys.addLocale('en-US', enUS);
+
+let parser = new DOMParser();
 
 function makeBib(style, item) {
   /* Generate a bibliography.
@@ -12,8 +16,7 @@ function makeBib(style, item) {
    * @param item: an item in CSL-JSON format
    * (see https://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#introduction)
    */
-  console.log("./csl/"+style);
-  let styleString = fs.readFileSync("./csl/" + style);
+  let styleString = loadStyle("./csl", style);
   let engine = sys.newEngine(styleString, 'en-US', null);
   let items = {
     "0": formatItem(item)
@@ -27,6 +30,26 @@ function makeBib(style, item) {
   // Bibliography is formatted as array [<css info>, <html element>]
   // We only want the HTML element
   return bib[1];
+}
+
+function loadStyle(cslDirectory, style) {
+  /* Returns the specified CSL style in a string.
+   * Handles dependent styles.
+   * @param cslDirectory: directory w/CSL styles
+   * @param style: style to load
+   * @return <Buffer> CSL file
+   */
+  let styleString = fs.readFileSync(cslDirectory + "/" + style);
+  if (style.startsWith("dependent")) {
+    let tree = parser.parseFromString(styleString.toString());
+    let select = xpath.useNamespaces({"csl": "http://purl.org/net/xbiblio/csl"});
+    let parent = select("//csl:link[@rel='independent-parent']/@href", tree)[0].value;
+    parent = cslDirectory + "/" + parent.substr(parent.lastIndexOf('/') + 1) + ".csl";
+    console.log(parent);
+    return fs.readFileSync(parent);
+  } else {
+    return styleString;
+  }
 }
 
 function formatItem(item) {
