@@ -1,7 +1,4 @@
 import axios from 'axios';
-import { DOMParser } from 'xmldom';
-import xpath from 'xpath';
-import parseDomain from 'parse-domain';
 
 const metascraper = require('metascraper')([
   require('metascraper-author')(),
@@ -14,8 +11,6 @@ const metascraper = require('metascraper')([
   require('metascraper-title')(),
   require('metascraper-url')()
 ]);
-
-const parser = new DOMParser();
 
 function getInfo(url) {
   /* Return a list of query results for a Website:
@@ -43,9 +38,9 @@ function getInfo(url) {
             metadata.thumbnail = metadata.logo;
             delete metadata.logo;
 
-            // Get the website title - we can usually just strip base URL
-            let domain = parseDomain(url);
-            metadata["container-title"] = domain.domain + "." +domain.tld;
+            // The "publisher" metascraper returns is actually usually the website title - hard to get publisher
+            // If a publisher is unavailable, default to the title of the page
+            metadata["container-title"] = metadata.publisher || metadata.title;
 
             // url needs to uppercase for CSL to be happy
             metadata.URL = metadata.url;
