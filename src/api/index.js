@@ -154,7 +154,8 @@ function getCitationStyleList() {
     "American Psychological Association 7th edition",
     "American Psychological Association 6th edition",
     "Modern Language Association 7th edition",
-    "Modern Language Association 8th edition"
+    "Modern Language Association 8th edition",
+    "Harvard"
   ];
 
   let index = 0;
@@ -170,11 +171,19 @@ function getCitationStyleList() {
       if (citationName == popularStyle) popular = true;
     }
 
-    if (popular) {
+    if (popular && citationName !== "Harvard") {
       citationStyles.unshift({
         citationName,
         citationShortName,
         citationFile: citationData[index],
+      });
+    } else if (citationName === "Harvard") {
+      // Put Harvard not at the front so it doesn't
+      // hog the front all the time
+      citationStyles.splice(2, 0, {
+        citationName,
+        citationShortName,
+        citationFile: citationData[index]
       });
     } else {
       citationStyles.push({
