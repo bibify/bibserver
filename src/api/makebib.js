@@ -5,10 +5,17 @@ import xpath from 'xpath';
 
 // One time setup
 let sys = new citeprocnode.simpleSys();
-let enUS = fs.readFileSync('./csl-locales/locales-en-US.xml', 'utf-8');
-sys.addLocale('en-US', enUS);
+loadLocales(sys, './csl-locales');
 
 let parser = new DOMParser();
+
+function loadLocales(sys, localeDir) {
+  let locales = fs.readFileSync(localeDir + '/locales.json', 'utf-8');
+  for (let locale of Object.keys(JSON.parse(locales)['language-names'])) {
+    let localeString = fs.readFileSync(localeDir + '/locales-' + locale + '.xml', 'utf-8');
+    sys.addLocale(locale, localeString);
+  }
+}
 
 function makeBib(style, item) {
   /* Generate a bibliography.
