@@ -1,14 +1,5 @@
 stages:
-  - linting
   - build
-
-linting:
-  stage: linting
-  image: node:latest
-  script:
-    - npm i --global jslint
-    - npm i
-    - jslint '**/*.js'
 
 build-docker-image:
   stage: build
