@@ -38,7 +38,7 @@ initializeDb( db => {
 	app.use('/api', api({ config, db }));
 
 	api.get('/', (req, res) => {
-        res.status(200).send('Success');
+        res.status(200).send('Success (if you are looking for the api, it is located under /api)');
 	});
 
 	app.server.listen(process.env.PORT || config.port, () => {
