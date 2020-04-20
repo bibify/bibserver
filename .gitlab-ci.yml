@@ -3,8 +3,6 @@ stages:
 
 build-docker-image:
   stage: build
-  only:
-    - master
   image:
     name: gcr.io/kaniko-project/executor:debug-v0.15.0
     entrypoint: [""]
