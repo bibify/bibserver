@@ -14,20 +14,24 @@ spec:
     spec:
       containers:
         - image: registry.gitlab.com/bibify/bibserver:latest
+          imagePullPolicy: Always
           name: bibserver
           ports:
             - containerPort: 8080
           livenessProbe:
             httpGet:
-              path: /
+              path: /api
               port: 8080
             initialDelaySeconds: 6
             periodSeconds: 5
+          env:
+          - name: PORT
+            value: "8080"
           resources:
             requests:
-              cpu: "200m"
-            limits: 
               cpu: "500m"
+            limits: 
+              cpu: "2000m"
       imagePullSecrets:
       - name: regcred
 
