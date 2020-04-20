@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: bibserver
+  namespace: bibify
+spec:
+  selector:
+    matchLabels:
+      app: bibserver
+  template:
+    metadata:
+      labels:
+        app: bibserver
+    spec:
+      containers:
+        - image: registry.gitlab.com/bibify/bibserver:latest
+          name: bibserver
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 6
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "200m"
+            limits: 
+              cpu: "500m"
+      imagePullSecrets:
+      - name: regcred
+
