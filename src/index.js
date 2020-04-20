@@ -37,6 +37,10 @@ initializeDb( db => {
 	// api router
 	app.use('/api', api({ config, db }));
 
+	api.get('/', (req, res) => {
+        res.status(200).send('Success');
+	});
+
 	app.server.listen(process.env.PORT || config.port, () => {
 		console.log(`Started on port ${app.server.address().port}`);
 	});
