@@ -36,6 +36,7 @@
     "compression": "^1.5.2",
     "cors": "^2.7.1",
     "express": "^4.13.3",
+    "express-prometheus-middleware": "^0.9.3",
     "fuse.js": "^3.6.1",
     "jsdom": "^15.2.1",
     "metascraper": "^5.11.9",
