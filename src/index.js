@@ -1,6 +1,7 @@
 import http from 'http';
 import express from 'express';
 import cors from 'cors';
+import promMid from 'express-prometheus-middleware';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import initializeDb from './db';
@@ -24,6 +25,12 @@ app.use(cors({
 
 app.use(bodyParser.json({
 	limit : config.bodyLimit
+}));
+
+app.use(promMid({
+  metricsPath: '/metrics',
+  collectDefaultMetrics: true,
+  requestDurationBuckets: [0.1, 0.5, 1, 1.5],
 }));
 
 // connect to db
