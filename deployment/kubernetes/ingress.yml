@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: bibify
+  namespace: bibify
+spec: 
+  rules:
+  - host: bibify.matthew-cloud.com
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: bibify-frontend
+            servicePort: 8000
+  - host: bibserver.matthew-cloud.com
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: bibify-backend
+            servicePort: 8080
