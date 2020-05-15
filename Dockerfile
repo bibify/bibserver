@@ -7,6 +7,10 @@ LABEL authors="Vincent Wang"
 COPY package.json /www/package.json
 RUN cd /www; npm install
 
+# Fix CSL MLA labelling
+sed -i -e 's/\(<title-short>\).*\(<\/title-short>\)/<title-short>MLA 8<\/title-short>/g' csl/modern-language-association.csl 
+sed -i -e 's/\(<title-short>\).*\(<\/title-short>\)/<title-short>MLA 7<\/title-short>/g' csl/modern-language-association-7th-edition.csl 
+
 # Copy app source
 COPY . /www
 
