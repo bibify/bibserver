@@ -97,6 +97,14 @@ export default ({ config, db }) => {
       .catch(next);
   });
 
+  api.post('/cite', (req, res, next) => {
+    let style = req.body.style;
+    console.log(style, req.body);
+    makebib.makeBib(style, req.body)
+      .then(bib => res.json(bib))
+      .catch(next);
+  });
+
   api.get('/books', (req, res) => {
     /* Return a list of query results for a Book:
      * {
