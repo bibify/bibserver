@@ -1,4 +1,6 @@
-import axios from 'axios';
+// Yes, I know this is in commonJS, we'll move to ES6 eventually
+const superagent = require('superagent');
+require('superagent-cache')(superagent);
 
 const metascraper = require('metascraper')([
   require('metascraper-author')(),
@@ -25,9 +27,11 @@ function getInfo(url) {
    * }
    */
   return new Promise((done, error) => {
-    axios.get(url)
-      .then((res) => {
-        metascraper({html: res.data, url: url})
+    superagent.get(url)
+      .end((err, res) => {
+        if (err) error(err);
+
+        metascraper({html: res.text, url: url})
           .then((metadata) => {
             // Format date
             if (metadata.date != null) {
@@ -67,9 +71,6 @@ function getInfo(url) {
           .catch((err) => {
             error(err);
           });
-      })
-      .catch((err) => {
-        console.log(err);
       });
   });
 }

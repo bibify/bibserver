@@ -28,15 +28,14 @@
   "author": "Vincent Wang <vwangsf@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.13.3",
     "bookify": "^0.1.2",
-    "citeproc": "^2.3.8",
+    "citeproc": "^2.3.10",
     "compression": "^1.5.2",
     "cors": "^2.7.1",
     "express": "^4.13.3",
-    "express-prometheus-middleware": "^0.9.3",
+    "express-prometheus-middleware": "^0.9.6",
     "fuse.js": "^3.6.1",
     "jsdom": "^15.2.1",
     "metascraper": "^5.11.10",
@@ -68,6 +67,6 @@
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-stage-0": "^6.5.0",
     "eslint": "^3.1.1",
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.4"
   }
 }
