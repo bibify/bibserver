@@ -23,20 +23,25 @@ function makeBib(style, item) {
    * @param item: an item in CSL-JSON format
    * (see https://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html#introduction)
    */
-  let styleString = loadStyle("./csl", style);
-  let engine = sys.newEngine(styleString, 'en-US', null);
-  let items = {
-    "0": formatItem(item)
-  };
-  sys.items = items;
-  console.log(items);
+  return new Promise((done, error) => {
+    loadStyle("./csl", style)
+      .then(styleString => {
+        let engine = sys.newEngine(styleString, 'en-US', null);
+        let items = {
+          "0": formatItem(item)
+        };
+        sys.items = items;
+        console.log(items);
 
-  engine.updateItems(Object.keys(items));
-  let bib = engine.makeBibliography();
-  console.log("bib", bib);
-  // Bibliography is formatted as array [<css info>, <html element>]
-  // We only want the HTML element
-  return bib[1];
+        engine.updateItems(Object.keys(items));
+        let bib = engine.makeBibliography();
+        console.log("bib", bib);
+        // Bibliography is formatted as array [<css info>, <html element>]
+        // We only want the HTML element
+        done(bib[1]);
+      })
+      .catch(err => error(err));
+  });
 }
 
 function loadStyle(cslDirectory, style) {
@@ -46,17 +51,27 @@ function loadStyle(cslDirectory, style) {
    * @param style: style to load
    * @return <Buffer> CSL file
    */
+  return new Promise((done, error) => {
+    fs.readFile(cslDirectory + "/" + style, (err, styleString) => {
+      if (err) error(err);
+
+      if (style.startsWith("dependent")) {
+        let tree = parser.parseFromString(styleString.toString());
+        let select = xpath.useNamespaces({"csl": "http://purl.org/net/xbiblio/csl"});
+        let parent = select("//csl:link[@rel='independent-parent']/@href", tree)[0].value;
+        parent = cslDirectory + "/" + parent.substr(parent.lastIndexOf('/') + 1) + ".csl";
+        console.log(parent);
+        fs.readFile(parent, (err, data) => {
+          if (err) error(err);
+          done(data);
+        });
+      } else {
+        done(styleString);
+      }
+    });
+  });
+
   let styleString = fs.readFileSync(cslDirectory + "/" + style);
-  if (style.startsWith("dependent")) {
-    let tree = parser.parseFromString(styleString.toString());
-    let select = xpath.useNamespaces({"csl": "http://purl.org/net/xbiblio/csl"});
-    let parent = select("//csl:link[@rel='independent-parent']/@href", tree)[0].value;
-    parent = cslDirectory + "/" + parent.substr(parent.lastIndexOf('/') + 1) + ".csl";
-    console.log(parent);
-    return fs.readFileSync(parent);
-  } else {
-    return styleString;
-  }
 }
 
 function formatItem(item) {

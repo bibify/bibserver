@@ -89,10 +89,12 @@ export default ({ config, db }) => {
     res.send(fields);
   });
 
-  api.get('/cite', (req, res) => {
+  api.get('/cite', (req, res, next) => {
     let style = req.query.style;
     console.log(style, req.query);
-    res.json(makebib.makeBib(style, req.query));
+    makebib.makeBib(style, req.query)
+      .then(bib => res.json(bib))
+      .catch(next);
   });
 
   api.get('/books', (req, res) => {
