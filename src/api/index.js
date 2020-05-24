@@ -91,6 +91,12 @@ export default ({ config, db }) => {
 
   api.get('/cite', (req, res, next) => {
     let style = req.query.style;
+    if (!style) {
+      res.status(400).send({
+        message: 'No style provided. You must provide a CSL style path (e.g. apa.csl).'
+      });
+    }
+
     console.log(style, req.query);
     makebib.makeBib(style, req.query)
       .then(bib => res.json(bib))
@@ -99,6 +105,12 @@ export default ({ config, db }) => {
 
   api.post('/cite', (req, res, next) => {
     let style = req.body.style;
+    if (!style) {
+      res.status(400).send({
+        message: 'No style provided. You must provide a CSL style path (e.g. apa.csl).'
+      });
+    }
+
     console.log(style, req.body);
     makebib.makeBib(style, req.body)
       .then(bib => res.json(bib))

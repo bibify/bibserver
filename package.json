@@ -29,7 +29,7 @@
   "license": "MIT",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "body-parser": "^1.13.3",
+    "body-parser": "^1.19.0",
     "bookify": "^0.1.2",
     "citeproc": "^2.3.10",
     "compression": "^1.5.2",
