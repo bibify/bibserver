@@ -1,6 +1,7 @@
 import http from 'http';
 import express from 'express';
 import cors from 'cors';
+import serverless from 'serverless-http';
 import promMid from 'express-prometheus-middleware';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
@@ -53,4 +54,4 @@ initializeDb( db => {
 	});
 });
 
-export default app;
+module.exports.handler = serverless(app);
