@@ -13,7 +13,7 @@ deploy staging:
     - serverless deploy --stage dev
   only:
     - master
-deploy staging:
+deploy:
   image: node:latest
   stage: deploy staging
   script:
