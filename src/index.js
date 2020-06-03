@@ -10,8 +10,8 @@ import middleware from './middleware';
 import api from './api';
 import config from './config.json';
 
-require("babel-core/register");
-require("babel-polyfill");
+// require("babel-core/register");
+// require("babel-polyfill");
 
 let app = express();
 app.server = http.createServer(app);

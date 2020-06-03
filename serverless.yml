@@ -4,7 +4,7 @@ provider:
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
   region: us-west-1
-  memorySize: 384
+  memorySize: 256
 functions:
   app:
     handler: dist/index.handler
