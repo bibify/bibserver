@@ -1,6 +1,6 @@
 // Yes, I know this is in commonJS, we'll move to ES6 eventually
 const superagent = require('superagent');
-//require('superagent-cache')(superagent);
+require('superagent-cache')(superagent);
 
 const metascraper = require('metascraper')([
   require('metascraper-author')(),
