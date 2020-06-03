@@ -9,7 +9,8 @@ deploy staging:
   stage: deploy staging
   script:
     - npm i -g serverless
-    - serverless config credentials --provider aws --key $ACCESS_KEY ?secret $SECRET_KEY
+    - npm i
+    - serverless config credentials --provider aws --key $ACCESS_KEY --secret $SECRET_KEY
     - serverless deploy --stage dev
   only:
     - master
@@ -18,7 +19,8 @@ deploy:
   stage: deploy staging
   script:
     - npm i -g serverless
-    - serverless config credentials --provider aws --key $ACCESS_KEY ?secret $SECRET_KEY
+    - npm i
+    - serverless config credentials --provider aws --key $ACCESS_KEY --secret $SECRET_KEY
     - serverless deploy --stage prod
   only:
     - tags
