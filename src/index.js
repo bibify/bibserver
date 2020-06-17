@@ -1,7 +1,7 @@
 import http from 'http';
 import express from 'express';
 import cors from 'cors';
-import serverless from 'serverless-http';
+// import serverless from 'serverless-http';
 import promMid from 'express-prometheus-middleware';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
@@ -10,8 +10,8 @@ import middleware from './middleware';
 import api from './api';
 import config from './config.json';
 
-// require("babel-core/register");
-// require("babel-polyfill");
+require("babel-core/register");
+require("babel-polyfill");
 
 let app = express();
 app.server = http.createServer(app);
@@ -54,4 +54,4 @@ initializeDb( db => {
 	});
 });
 
-module.exports.handler = serverless(app);
+//module.exports.handler = serverless(app);
