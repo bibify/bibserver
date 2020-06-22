@@ -117,7 +117,7 @@ export default ({ config, db }) => {
       .catch(next);
   });
 
-  api.get('/books', (req, res) => {
+  api.get('/books', (req, res, next) => {
     /* Return a list of query results for a Book:
      * {
      *   type: "BOOK",
@@ -135,10 +135,11 @@ export default ({ config, db }) => {
     books.search(query)
       .then((results) => {
         res.json(results);
-      });
+      })
+      .catch(next);
 	});
 
-  api.get('/website', (req, res) => {
+  api.get('/website', (req, res, next) => {
     /* Return a list of query results for a Website:
      * {
      *   type: "website",
@@ -155,6 +156,13 @@ export default ({ config, db }) => {
     website.getInfo(url)
       .then((info) => {
         res.json(info);
+      })
+      .catch(err => {
+        if (err.code === "ENOTFOUND") {
+          res.status(404).send("Website specified could not be found.");
+        } else {
+          next(err);
+        }
       });
   });
 

@@ -26,10 +26,15 @@ function getInfo(url) {
    *   <anything else metascraper picks up>
    * }
    */
+  console.log(url);
   return new Promise((done, error) => {
     superagent.get(url)
       .end((err, res) => {
-        if (err) error(err);
+        console.log(err);
+        if (err) {
+          error(err);
+          return;
+        }
 
         metascraper({html: res.text, url: url})
           .then((metadata) => {
