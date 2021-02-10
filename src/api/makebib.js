@@ -27,6 +27,7 @@ function makeBib(style, item) {
     loadStyle("./csl", style)
       .then(styleString => {
         let engine = sys.newEngine(styleString, 'en-US', null);
+        engine.setOutputFormat("rtf"); // should be moved to a param of the request ideally
         let items = {
           "0": formatItem(item)
         };
