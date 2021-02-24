@@ -99,7 +99,7 @@ export default ({ config, db }) => {
 
     let format = req.query.format;
     if (!format) {
-      format = 'rtf';
+      format = 'html';
     }
 
     console.log(style, format, req.query);
@@ -118,7 +118,7 @@ export default ({ config, db }) => {
 
     let format = req.body.format;
     if (!format) {
-      format = 'rtf';
+      format = 'html';
     }
 
     console.log(style, format, req.body);
