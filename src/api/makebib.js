@@ -17,7 +17,7 @@ function loadLocales(sys, localeDir) {
   }
 }
 
-function makeBib(style, item) {
+function makeBib(style, format, item) {
   /* Generate a bibliography.
    * @param style: CSL citation style file.
    * @param item: an item in CSL-JSON format
@@ -27,7 +27,7 @@ function makeBib(style, item) {
     loadStyle("./csl", style)
       .then(styleString => {
         let engine = sys.newEngine(styleString, 'en-US', null);
-        engine.setOutputFormat("rtf"); // should be moved to a param of the request ideally
+        engine.setOutputFormat(format);
         let items = {
           "0": formatItem(item)
         };

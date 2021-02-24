@@ -97,8 +97,15 @@ export default ({ config, db }) => {
       });
     }
 
-    console.log(style, req.query);
-    makebib.makeBib(style, req.query)
+    let format = req.query.format;
+    if (!format) {
+      res.status(400).send({
+        message: 'No format provided. You must provide a format style (e.g. rtf, html, text, asciidoc, fo)'
+      });
+    }
+
+    console.log(style, format, req.query);
+    makebib.makeBib(style, format, req.query)
       .then(bib => res.json(bib))
       .catch(next);
   });
@@ -111,8 +118,15 @@ export default ({ config, db }) => {
       });
     }
 
-    console.log(style, req.body);
-    makebib.makeBib(style, req.body)
+    let format = req.body.format;
+    if (!format) {
+      res.status(400).send({
+        message: 'No format provided. You must provide a format style (e.g. rtf, html, text, asciidoc, fo)'
+      });
+    }
+
+    console.log(style, format, req.body);
+    makebib.makeBib(style, format, req.body)
       .then(bib => res.json(bib))
       .catch(next);
   });
