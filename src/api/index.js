@@ -99,9 +99,7 @@ export default ({ config, db }) => {
 
     let format = req.query.format;
     if (!format) {
-      res.status(400).send({
-        message: 'No format provided. You must provide a format style (e.g. rtf, html, text, asciidoc, fo)'
-      });
+      format = 'rtf';
     }
 
     console.log(style, format, req.query);
@@ -120,9 +118,7 @@ export default ({ config, db }) => {
 
     let format = req.body.format;
     if (!format) {
-      res.status(400).send({
-        message: 'No format provided. You must provide a format style (e.g. rtf, html, text, asciidoc, fo)'
-      });
+      format = 'rtf';
     }
 
     console.log(style, format, req.body);
