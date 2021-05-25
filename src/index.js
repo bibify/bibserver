@@ -20,9 +20,7 @@ app.server = http.createServer(app);
 app.use(morgan('dev'));
 
 // 3rd party middleware
-app.use(cors({
-	exposedHeaders: config.corsHeaders
-}));
+app.use(cors());
 
 app.use(bodyParser.json({
 	limit : config.bodyLimit
