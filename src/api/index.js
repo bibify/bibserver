@@ -127,6 +127,31 @@ export default ({ config, db }) => {
       .catch(next);
   });
 
+  api.post('/citeMultiple', (req, res, next) => {
+    let style = req.body.style;
+    if (!style) {
+      res.status(400).send({
+        message: 'No style provided. You must provide a CSL style path (e.g. apa.csl).'
+      });
+    }
+
+    let format = req.body.format;
+    if (!format) {
+      format = 'html';
+    }
+
+    let bibs = [];   
+
+    var actions = req.body.items.map(function(x) { 
+      return makebib.makeBib(style, format, x)
+          .then(x => bibs.push(x)); 
+      });
+
+    Promise.all(actions).then(() => {
+      console.log(bibs); res.json(bibs);
+    });    
+  });  
+
   api.get('/books', (req, res, next) => {
     /* Return a list of query results for a Book:
      * {
